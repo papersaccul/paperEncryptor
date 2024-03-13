@@ -14,6 +14,8 @@ import com.papersaccul.PaperEncryptor.encryption.asciiCipher;
 import com.papersaccul.PaperEncryptor.encryption.base64Cipher;
 import com.papersaccul.PaperEncryptor.encryption.binCipher;
 import com.papersaccul.PaperEncryptor.encryption.md5Cipher;
+import com.papersaccul.PaperEncryptor.encryption.hexCipher;
+import com.papersaccul.PaperEncryptor.encryption.morseCipher;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -56,7 +58,7 @@ public class PaperEncryptor extends JFrame {
         outputTextArea = new JTextArea(5, 20);
         outputTextArea.setLineWrap(true);
         outputTextArea.setWrapStyleWord(true);
-        algorithmComboBox = new JComboBox<>(new String[]{"Caesar", "XOR", "Paper", "Bin", "Base64", "Rail Fence", "MD5", "ASCII"});
+        algorithmComboBox = new JComboBox<>(new String[]{"Caesar", "XOR", "Paper", "Bin", "Base64", "Rail Fence", "MD5", "ASCII", "Hex", "Morse"});
         charsetComboBox = new JComboBox<>(new String[]{"UTF-8", "UTF-16", "UTF-32", "ASCII",  "KOI8-R", "KOI8-U", "Windows-1251", "Windows-1252", "UTF-16BE", "UTF-16LE", "UTF-32BE", "UTF-32LE", "US-ASCII", "ISO-8859-2", "ISO-8859-3", "ISO-8859-4", "ISO-8859-6", "ISO-8859-7", "ISO-8859-8", "ISO-8859-9", "ISO-8859-10", "ISO-8859-13", "ISO-8859-14", "ISO-8859-16"});
         keyField = new JTextField(20);
         encryptMode = new JRadioButton("Encrypt", true);
@@ -122,7 +124,7 @@ public class PaperEncryptor extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedAlgorithm = (String) algorithmComboBox.getSelectedItem();
-                java.util.List<String> noKeyAlgorithms = Arrays.asList("Base64", "Bin", "MD5", "ASCII");
+                java.util.List<String> noKeyAlgorithms = Arrays.asList("Base64", "Bin", "MD5", "ASCII", "Hex", "Morse");
                 if (noKeyAlgorithms.contains(selectedAlgorithm)) {
                     keyField.setVisible(false);
                     keyLabel.setVisible(false);
@@ -198,6 +200,12 @@ public class PaperEncryptor extends JFrame {
                 break;
             case "ASCII":
                 algorithm = new asciiCipher();
+                break;
+            case "Hex":
+                algorithm = new hexCipher();
+                break;
+            case "Morse":
+                algorithm = new morseCipher();
                 break;
         }
 

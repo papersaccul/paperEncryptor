@@ -2,6 +2,9 @@
 
 ![image](https://github.com/papersaccul/paperEncryptor/assets/59151352/6c8c9173-d23e-4ce3-b8ab-5c75e21e303f)
 
+## Support
+ASCII, Base64, Caesar, Paper, RailFence, XOR, Bin, Hex, Morse(eng)  
+
 ## Build
 ```sh
 git clone https://github.com/papersaccul/paperEncryptor
