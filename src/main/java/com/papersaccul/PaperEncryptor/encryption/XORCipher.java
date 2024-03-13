@@ -3,7 +3,7 @@ package com.papersaccul.PaperEncryptor.encryption;
 import java.nio.charset.Charset;
 
 public class XORCipher implements EncryptionAlgorithm {
-    private static final String DEFAULT_KEY = "default";
+    private static final String DEFAULT_KEY = "1";
 
     @Override
     public String encrypt(String text, String key, String charset, String... additionalParams) {

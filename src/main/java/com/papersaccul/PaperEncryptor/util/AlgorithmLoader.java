@@ -8,6 +8,8 @@ import com.papersaccul.PaperEncryptor.encryption.PaperCipher;
 import com.papersaccul.PaperEncryptor.encryption.XORCipher;
 import com.papersaccul.PaperEncryptor.encryption.base64Cipher;
 import com.papersaccul.PaperEncryptor.encryption.binCipher;
+import com.papersaccul.PaperEncryptor.encryption.md5Cipher;
+import com.papersaccul.PaperEncryptor.encryption.asciiCipher;
 public class AlgorithmLoader {
    private Map<String, Class<? extends EncryptionAlgorithm>> algorithms;
    public AlgorithmLoader() {
@@ -22,6 +24,8 @@ public class AlgorithmLoader {
    algorithms.put("Paper Cipher", PaperCipher.class);
    algorithms.put("Bin Cipher", binCipher.class);
    algorithms.put("Base64", base64Cipher.class);
+   algorithms.put("MD5", md5Cipher.class);
+   algorithms.put("ASCII", asciiCipher.class);
 
    }
    public EncryptionAlgorithm getAlgorithm(String algorithmName) {

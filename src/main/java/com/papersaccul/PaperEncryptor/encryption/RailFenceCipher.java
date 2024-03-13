@@ -3,9 +3,13 @@ package com.papersaccul.PaperEncryptor.encryption;
 import java.nio.charset.Charset;
 
 public class RailFenceCipher implements EncryptionAlgorithm {
+    private static final String DEFAULT_KEY = "1";
 
     @Override
     public String encrypt(String text, String key, String charset, String... additionalParams) {
+        if (key == null || key.isEmpty()) {
+            key = DEFAULT_KEY;
+        }
         int depth = Integer.parseInt(key);
         if (depth <= 1) return text;
 
@@ -36,6 +40,9 @@ public class RailFenceCipher implements EncryptionAlgorithm {
 
     @Override
     public String decrypt(String text, String key, String charset, String... additionalParams) {
+        if (key == null || key.isEmpty()) {
+            key = DEFAULT_KEY;
+        }
         int depth = Integer.parseInt(key);
         if (depth <= 1) return text;
 
