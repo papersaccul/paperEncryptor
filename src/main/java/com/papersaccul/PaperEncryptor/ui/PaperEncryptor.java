@@ -1,17 +1,19 @@
 package com.papersaccul.PaperEncryptor.ui;
 
 import javax.swing.*;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.DocumentEvent;
 
-import com.formdev.flatlaf.FlatDarkLaf; 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.papersaccul.PaperEncryptor.encryption.CaesarCipher;
 import com.papersaccul.PaperEncryptor.encryption.EncryptionAlgorithm;
 import com.papersaccul.PaperEncryptor.encryption.PaperCipher;
 import com.papersaccul.PaperEncryptor.encryption.RailFenceCipher;
 import com.papersaccul.PaperEncryptor.encryption.XORCipher;
+import com.papersaccul.PaperEncryptor.encryption.asciiCipher;
 import com.papersaccul.PaperEncryptor.encryption.base64Cipher;
 import com.papersaccul.PaperEncryptor.encryption.binCipher;
 import com.papersaccul.PaperEncryptor.encryption.md5Cipher;
-import com.papersaccul.PaperEncryptor.encryption.asciiCipher;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,6 +33,7 @@ public class PaperEncryptor extends JFrame {
     private JRadioButton decryptMode;
     private JLabel keyLabel;
     private JButton copyButton;
+    private JButton processButton; 
 
     public PaperEncryptor() {
         try {
@@ -60,6 +63,7 @@ public class PaperEncryptor extends JFrame {
         decryptMode = new JRadioButton("Decrypt");
         keyLabel = new JLabel("Key:");
         copyButton = new JButton("Copy");
+        processButton = new JButton("Process"); 
 
         ButtonGroup modeGroup = new ButtonGroup();
         modeGroup.add(encryptMode);
@@ -91,55 +95,29 @@ public class PaperEncryptor extends JFrame {
         gbc.gridx = 1;
         mainPanel.add(keyField, gbc);
 
-        JButton processButton = new JButton("Process");
-        processButton.addActionListener(new ActionListener() {
+        inputTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String inputText = inputTextArea.getText();
-                String selectedAlgorithm = (String) algorithmComboBox.getSelectedItem();
-                String selectedCharset = (String) charsetComboBox.getSelectedItem();
-                String key = keyField.getText();
+            public void insertUpdate(DocumentEvent e) {
+                processText();
+            }
 
-                EncryptionAlgorithm algorithm = null;
-                switch (selectedAlgorithm) {
-                    case "Caesar":
-                        algorithm = new CaesarCipher();
-                        break;
-                    case "XOR":
-                        algorithm = new XORCipher();
-                        break;
-                    case "Paper":
-                        algorithm = new PaperCipher();
-                        break;
-                    case "Bin":
-                        algorithm = new binCipher();
-                        break;
-                    case "Base64":
-                        algorithm = new base64Cipher();
-                        break;
-                    case "Rail Fence":
-                        algorithm = new RailFenceCipher();
-                        break;
-                    case "MD5":
-                        algorithm = new md5Cipher();
-                        break;
-                    case "ASCII":
-                        algorithm = new asciiCipher();
-                        break;
-                }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                processText();
+            }
 
-                if (algorithm != null) {
-                    String result = "";
-                    if (encryptMode.isSelected()) {
-                        result = algorithm.encrypt(inputText, key, selectedCharset);
-                    } else if (decryptMode.isSelected()) {
-                        result = algorithm.decrypt(inputText, key, selectedCharset);
-                    }
-                    outputTextArea.setText(result);
-                }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                processText();
             }
         });
 
+        processButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                processText();
+            }
+        });
         algorithmComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -165,6 +143,7 @@ public class PaperEncryptor extends JFrame {
             }
         });
 
+
         gbc.gridx = 0;
         gbc.gridy = 5;
         mainPanel.add(encryptMode, gbc);
@@ -173,11 +152,10 @@ public class PaperEncryptor extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.gridwidth = 1;
-        mainPanel.add(processButton, gbc);
-        gbc.gridx = 1;
         mainPanel.add(copyButton, gbc);
-
-        URL iconURL = getClass().getResource("/paperEncryptorLogo.png"); 
+        gbc.gridx = 1;
+        mainPanel.add(processButton, gbc);
+        URL iconURL = getClass().getResource("resources/paperEncryptorLogo.png");
         if (iconURL != null) {
             ImageIcon icon = new ImageIcon(iconURL);
             setIconImage(icon.getImage());
@@ -187,6 +165,51 @@ public class PaperEncryptor extends JFrame {
 
         add(mainPanel);
         setVisible(true);
+    }
+
+    private void processText() {
+        String inputText = inputTextArea.getText();
+        String selectedAlgorithm = (String) algorithmComboBox.getSelectedItem();
+        String selectedCharset = (String) charsetComboBox.getSelectedItem();
+        String key = keyField.getText();
+
+        EncryptionAlgorithm algorithm = null;
+        switch (selectedAlgorithm) {
+            case "Caesar":
+                algorithm = new CaesarCipher();
+                break;
+            case "XOR":
+                algorithm = new XORCipher();
+                break;
+            case "Paper":
+                algorithm = new PaperCipher();
+                break;
+            case "Bin":
+                algorithm = new binCipher();
+                break;
+            case "Base64":
+                algorithm = new base64Cipher();
+                break;
+            case "Rail Fence":
+                algorithm = new RailFenceCipher();
+                break;
+            case "MD5":
+                algorithm = new md5Cipher();
+                break;
+            case "ASCII":
+                algorithm = new asciiCipher();
+                break;
+        }
+
+        if (algorithm != null) {
+            String result = "";
+            if (encryptMode.isSelected()) {
+                result = algorithm.encrypt(inputText, key, selectedCharset);
+            } else if (decryptMode.isSelected()) {
+                result = algorithm.decrypt(inputText, key, selectedCharset);
+            }
+            outputTextArea.setText(result);
+        }
     }
 
     public static void main(String[] args) {

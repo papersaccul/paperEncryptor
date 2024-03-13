@@ -6,10 +6,10 @@ import com.papersaccul.PaperEncryptor.encryption.CaesarCipher;
 import com.papersaccul.PaperEncryptor.encryption.EncryptionAlgorithm;
 import com.papersaccul.PaperEncryptor.encryption.PaperCipher;
 import com.papersaccul.PaperEncryptor.encryption.XORCipher;
+import com.papersaccul.PaperEncryptor.encryption.asciiCipher;
 import com.papersaccul.PaperEncryptor.encryption.base64Cipher;
 import com.papersaccul.PaperEncryptor.encryption.binCipher;
 import com.papersaccul.PaperEncryptor.encryption.md5Cipher;
-import com.papersaccul.PaperEncryptor.encryption.asciiCipher;
 public class AlgorithmLoader {
    private Map<String, Class<? extends EncryptionAlgorithm>> algorithms;
    public AlgorithmLoader() {
